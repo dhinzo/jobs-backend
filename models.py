@@ -6,12 +6,12 @@ from flask_login import UserMixin
 DATABASE = SqliteDatabase('jobs.sqlite')
 
 
-# class User(UserMixin, Model):
-#     username = CharField(unique=True)
-#     password = CharField()
+class User(UserMixin, Model):
+    username = CharField(unique=True)
+    password = CharField()
 
-#     class Meta:
-#         database = DATABASE
+    class Meta:
+        database = DATABASE
 
 
 class Job(Model):
@@ -21,7 +21,7 @@ class Job(Model):
     link = CharField(max_length=100)
     materials_required = CharField(max_length=100)
     notes = CharField(default=None)
-    # applicant = ForeignKeyField(User, backref='user_jobs')
+    applicant = ForeignKeyField(User, backref='jobs')
     created_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
@@ -30,6 +30,6 @@ class Job(Model):
 
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([Job], safe=True)
+    DATABASE.create_tables([User, Job], safe=True)
     print("tables successfully created")
     DATABASE.close()

@@ -1,16 +1,39 @@
 from flask import Flask, g
 from flask_cors import CORS
+from flask_login import LoginManager
+
 
 import models
 from blueprints.jobs import job
+from blueprints.users import user
 
 DEBUG = True
 PORT = 8000
 
 app = Flask(__name__)
 
+app.secret_key = "3058nN3433Da"
+login_manager = LoginManager()
+
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    try:
+        user = models.User.get_by_id(user_id)
+        print("loading the following user: " + user)
+        return user
+    except models.DoesNotExist:
+        return None
+
+
 CORS(job, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
+
+
 app.register_blueprint(job, url_prefix='/trackr/jobs')
+app.register_blueprint(user, url_prefix='/trackr/users')
 
 
 @app.before_request
