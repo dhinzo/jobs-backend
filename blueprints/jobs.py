@@ -4,6 +4,10 @@ from flask import Blueprint, jsonify, request
 
 from playhouse.shortcuts import model_to_dict
 
+from flask_login import current_user
+from flask_login import login_required
+
+
 # decorators
 # first argument is blueprint's name
 # second argument is the import name
@@ -23,12 +27,28 @@ def get_all_jobs():
         return jsonify(data={}, status={"code": 401, "message": "Error getting all all job data"})
 
 
+@job.route('/<id>', methods=["GET"])
+@login_required
+def get_one_job(id):
+    job = models.Job.get_by_id(id)
+    job_dict = model_to_dict(job)
+    return jsonify(data=job_dict(job), status={"code": 200, "message": "Success getting one post"})
+
+
 @job.route('/', methods=["POST"])
+@login_required
 def create_job():
     try:
         payload = request.get_json()
-        print(type(payload), 'payload')
-        job = models.Job.create(**payload)
+        print(payload, 'payload')
+        job = models.Job.create(**payload, applicant=current_user.id)
+        # company=payload["company"],
+        # position=payload["position"],
+        # location=payload["location"],
+        # materials_required=payload["materials_required"],
+        # link=payload["link"],
+        # notes=payload["notes"]
+        # )
         # look at object data
         print(job.__dict__)
         # add print(dir(job)) if you want to see all the methods that you can use with job
