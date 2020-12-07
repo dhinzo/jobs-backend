@@ -14,14 +14,28 @@ class User(UserMixin, Model):
         database = DATABASE
 
 
-"""
-class Goals(Model):
+'''
+
+what is the weekly goal?
+
+class WeekGoals(Model):
     job_seeker = FKF(User, backref=job)
-    current_app = FKF(Job, backref=app)
-    time_spent = IntField(default=0)
+    
+    num_of_apps = IntegerField(default=0)
+    apps_completed = IntegerField(default=0)
+    incomplete_apps = IntegerField(default=0)
+
     class Meta:
         database=DATABASE
-"""
+
+
+what are the stats for progress on each job?
+class JobGoals(Model):
+    job_seeker = FKF(User, backref=job)
+    current_app = FKF(Job, backref=app)
+
+
+'''
 
 
 class Job(Model):

@@ -35,6 +35,13 @@ def get_one_job(id):
     return jsonify(data=job_dict(job), status={"code": 200, "message": "Success getting one post"})
 
 
+@job.route('/myjobs', methods=["GET"])
+@login_required
+def get_my_jobs():
+    jobs = [model_to_dict(job) for job in current_user.jobs]
+    return jsonify(data=jobs, status={"code": 200, "message": "Success getting user jobs"})
+
+
 @job.route('/', methods=["POST"])
 @login_required
 def create_job():
