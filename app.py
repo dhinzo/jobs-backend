@@ -35,8 +35,10 @@ def load_user(user_id):
         return None
 
 
-CORS(job, origins=['http://localhost:3000'], supports_credentials=True)
-CORS(user, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(job, origins=['http://localhost:3000',
+                   'https://myjobtrackr-app.herokuapp.com'], supports_credentials=True)
+CORS(user, origins=['http://localhost:3000',
+                    'https://myjobtrackr-app.herokuapp.com'], supports_credentials=True)
 
 
 app.register_blueprint(job, url_prefix='/trackr/jobs')
