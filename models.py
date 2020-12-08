@@ -47,6 +47,7 @@ class Job(Model):
     notes = CharField(default=None)
     applicant = ForeignKeyField(User, backref='jobs')
     created_at = DateTimeField(default=datetime.datetime.now)
+    # status = IntegerField(default=1)
 
     class Meta:
         database = DATABASE
