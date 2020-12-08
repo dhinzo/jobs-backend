@@ -12,6 +12,13 @@ PORT = 8000
 
 app = Flask(__name__)
 
+
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_SAMESITE='None'
+)
+
+
 app.secret_key = "3058nN3433Da"
 login_manager = LoginManager()
 
@@ -22,7 +29,7 @@ login_manager.init_app(app)
 def load_user(user_id):
     try:
         user = models.User.get_by_id(user_id)
-        print("loading the following user: " + user_id)
+        # print("loading the following user: " + user_id)
         return user
     except models.DoesNotExist:
         return None
