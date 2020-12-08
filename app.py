@@ -1,7 +1,7 @@
 from flask import Flask, g
 from flask_cors import CORS
 from flask_login import LoginManager
-
+import os
 
 import models
 from blueprints.jobs import job
@@ -59,8 +59,12 @@ def after_request(response):
 
 @app.route('/')
 def index():
-    return 'hello'
+    return 'hello world'
 
+
+if 'ON_HEROKU' in os.environ:
+    print('\non heroku!')
+    models.initialize()
 
 if __name__ == '__main__':
     models.initialize()
